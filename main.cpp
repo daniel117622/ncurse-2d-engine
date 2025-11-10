@@ -8,35 +8,20 @@
 #include "text_utils.h"
 #include "background.h"
 
-
-wchar_t get_piece_char(int piece_idx, int col) 
+void write_h_line(int y_pos)
 {
-    switch(piece_idx) 
+    TextStyle *t_des = (TextStyle *)malloc(sizeof(TextStyle));
+    t_des->x = 0;
+    t_des->y = y_pos;
+    t_des->color_pair = COLOR_TEXT_NORMAL; 
+
+
+    for (int x = 0 ; x <= 32 ; x++ ) 
     {
-        case 0: // ████    ████████████
-            return (col < 4 || (col >= 8 && col < 20)) ? L'X' : L' ';
-        case 1: // ████    ████        
-            return (col < 4 || (col >= 8 && col < 12)) ? L'X' : L' ';
-        case 2: // ████████████████████
-            return L'X';
-        case 3: //         ████    ████
-            return ((col >= 8 && col < 12) || (col >= 16 && col < 20)) ? L'X' : L' ';
-        case 4: // ████████████    ████
-            return (col < 12 || (col >= 16 && col < 20)) ? L'X' : L' ';
-        default:
-            return L' ';
+	t_des->x = x;
+        print_text_color("#", t_des);
     }
-};
-
-void render_piece_line(int piece_idx, wchar_t *buf) 
-{
-    for (int c = 0; c < 20; c++) {
-        buf[c] = get_piece_char(piece_idx, c);
-    }
-    buf[20] = 0;
 }
-
-
 
 int main()
 {
@@ -48,22 +33,7 @@ int main()
 
     set_background(BLACK_BACKGROUND);
 
-    int x_position = 20 ; int y_position = 10;
-    text_descriptor->y = x_position;
-    text_descriptor->x = 20;
-    text_descriptor->color_pair = COLOR_TEXT_ERROR;
-
-    wchar_t linebuf[21];
-    char utf8buf[128];
-    for (int line = 0; line <= 9; line++)
-    {
-        text_descriptor->y = y_position + line;
-        int idx = (line / 2) % 5;
-        render_piece_line(idx, linebuf);
-        wcstombs(utf8buf, linebuf, sizeof(utf8buf));
-        print_text_color(utf8buf, text_descriptor);
-    }
-
+    write_h_line(3);
 
     getch();
     endwin();
