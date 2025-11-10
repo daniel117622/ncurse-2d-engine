@@ -8,12 +8,12 @@
 #include "text_utils.h"
 #include "background.h"
 
-void write_h_line(int y_pos)
+void write_h_line(int y_pos, int COLOR_PAIR)
 {
     TextStyle *t_des = (TextStyle *)malloc(sizeof(TextStyle));
     t_des->x = 0;
     t_des->y = y_pos;
-    t_des->color_pair = COLOR_TEXT_NORMAL; 
+    t_des->color_pair = COLOR_PAIR; 
 
 
     for (int x = 0 ; x <= 32 ; x++ ) 
@@ -32,9 +32,12 @@ int main()
     text_descriptor->x = 0;
 
     set_background(BLACK_BACKGROUND);
-
-    write_h_line(3);
-
+    
+    for (int y = 5; y <= 15; y++)
+    {
+	int color = COLOR_TEXT_NORMAL;
+        write_h_line(y, COLOR_TEXT_NORMAL - 5 + y);
+    }
     getch();
     endwin();
     
